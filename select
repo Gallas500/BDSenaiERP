@@ -20,6 +20,7 @@ WHERE
     f.cpf_cnpj = 254543543
 ;
 
+1º Metodo de fazer
 SELECT
     c.nome AS nome_do_colaborador,
     c.cpf,
@@ -60,6 +61,7 @@ LEFT JOIN contato c2 ON c.id = c2.colaborador_id
 inner JOIN cargo c3 ON c.cargo_id = c3.id;
 ;
 
+2º Metodo de fazer
 SELECT
     c.nome AS nome_do_colaborador,
     c.cpf,
