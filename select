@@ -1,4 +1,4 @@
-select
+SELECT
 f.nome,
 f.data_cadastro,
 c.nome as nome_do_contato,
@@ -9,14 +9,14 @@ c2.data_cadastro as dtc_colaborador,
 c2.rg as rg_colaborador,
 c2.orgao_rg as orgao_uf_colaborador,
 s.nome as nome_setor
-from
+FROM
 fornecedor as f
-inner join tipo_fornecedor tf on f.tipo_fornecedor_id = tf.id
-inner join empresa e on f.id_empresa = e.id
-inner join contato c on e.id = c.empresa_id
-inner join colaborador c2 on c.colaborador_id = c2.id
-inner join setor s on c2.id_setor = s.id
-where
+INNER JOIN tipo_fornecedor tf on f.tipo_fornecedor_id = tf.id
+INNER JOIN empresa e on f.id_empresa = e.id
+INNER JOIN contato c on e.id = c.empresa_id
+INNER JOIN colaborador c2 on c.colaborador_id = c2.id
+INNER JOIN setor s on c2.id_setor = s.id
+WHERE
     f.cpf_cnpj = 254543543
 ;
 
@@ -60,16 +60,16 @@ LEFT JOIN contato c2 ON c.id = c2.colaborador_id
 inner JOIN cargo c3 ON c.cargo_id = c3.id;
 ;
 
-ELECT
+SELECT
     c.nome AS nome_do_colaborador,
     c.cpf,
     c3.nome AS cargo,
     c3.salario AS salario,
     CASE
-        WHEN c3.salario <= 1212 THEN c3.salario * 0.075
-        WHEN c3.salario > 1212 AND c3.salario <= 2424.35 THEN c3.salario * 0.09
-        WHEN c3.salario > 2424.36 AND c3.salario <= 3641.03 THEN c3.salario * 0.12
-        WHEN c3.salario > 3641.04 AND c3.salario <= 7087.22 THEN c3.salario * 0.14
+        WHEN c3.salario <= 1212.00 THEN c3.salario * 0.075
+        WHEN c3.salario >= 1212.01 AND c3.salario <= 2427.35 THEN c3.salario * 0.09
+        WHEN c3.salario >= 2427.36 AND c3.salario <= 3641.03 THEN c3.salario * 0.12
+        WHEN c3.salario >= 3641.04 AND c3.salario <= 7087.22 THEN c3.salario * 0.14
         ELSE c3.salario * 0.14
     END AS aliquota_inss,
     CASE
@@ -80,14 +80,15 @@ ELECT
         ELSE c3.salario * 0.275
     END AS aliquota_irrf,
     CASE
-        WHEN c3.salario <= 1903.98 THEN c3.salario - (c3.salario * (7.5 / 100)) -- inss
-        WHEN c3.salario >= 1903.98 AND c3.salario <= 2424.35 THEN  c3.salario - (c3.salario * 0.165) -- inss e irrf
-        WHEN c3.salario >= 2424.36 AND c3.salario <= 2826.65 THEN  c3.salario - (c3.salario * 0.195)  -- inss e irrf
-        WHEN c3.salario >= 2826.66 AND c3.salario <= 3641.03 THEN  c3.salario - (c3.salario * 0.27)  -- inss e irrf
-        WHEN c3.salario >= 3641.04 AND c3.salario <= 3751.05 THEN  c3.salario - (c3.salario * 0.29)  -- inss e irrf
-        WHEN c3.salario >= 3751.06 AND c3.salario <= 4664.68 THEN  c3.salario - (c3.salario * 0.365)  -- inss e irrf
-        WHEN c3.salario >= 4664.69 AND c3.salario <= 7087.22 THEN c3.salario - (c3.salario * 0.415)-- inss e irrf
-        WHEN c3.salario >= 7087.23 THEN c3.salario - (c3.salario * 0.415)-- inss e irrf
+        WHEN c3.salario <= 1212.00 THEN c3.salario - (c3.salario * 0.075) -- inss(0.075) + irrf(0)
+        WHEN c3.salario >= 1212.01 AND c3.salario <= 1903.98 THEN c3.salario - (c3.salario * 0.09) -- inss(0.09) + irrf(0)
+        WHEN c3.salario >= 1903.99 AND c3.salario <= 2427.35 THEN  c3.salario - (c3.salario * 0.165) -- inss(0.09) + irrf(0.075)
+        WHEN c3.salario >= 2427.36 AND c3.salario <= 2826.65 THEN  c3.salario - (c3.salario * 0.195)  -- inss(0.12) + irrf(0.075)
+        WHEN c3.salario >= 2826.66 AND c3.salario <= 3641.03 THEN  c3.salario - (c3.salario * 0.27)  -- inss(0.12) + irrf(0.15)
+        WHEN c3.salario >= 3641.04 AND c3.salario <= 3751.05 THEN  c3.salario - (c3.salario * 0.29)  -- inss(0.14) + irrf(0.15)
+        WHEN c3.salario >= 3751.06 AND c3.salario <= 4664.68 THEN  c3.salario - (c3.salario * 0.365)  -- inss(0.14) + irrf(0.225)
+        WHEN c3.salario >= 4664.69 AND c3.salario <= 7087.22 THEN c3.salario - (c3.salario * 0.415)-- inss(0.14) + irrf(0.275)
+        WHEN c3.salario >= 7087.23 THEN c3.salario - (c3.salario * 0.415)-- inss(0.14) + irrf(0.275)
     END AS salario_liquido
 FROM
 colaborador AS c
